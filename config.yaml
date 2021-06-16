@@ -1,0 +1,112 @@
+directory: /mnt/e/music
+library: /mnt/e/music/musiclibrary.blb
+
+asciify_paths: yes
+threaded: yes
+per_disc_numbering: yes
+
+import:
+  # write metadata to music files
+  write: yes
+
+  # move imported files from source to the music directory
+  move: yes
+  resume: yes
+  delete: yes
+  incremental: yes
+  quiet_fallback: skip
+  timid: no
+  default_action: apply
+  bell: no
+  log: beetslog.log
+
+# Remove junk files
+clutter: ["Thumbs.DB", ".DS_Store"]
+
+sort_album: albumartist+ album+
+sort_item: artist+ album+ disc+ track+
+sort_case_insensitive: yes
+
+
+# Plugins --------------------------------------------------------------------
+
+plugins: [
+  info,
+  # beatport,
+  fetchart,
+  embedart,
+  lastgenre,
+  missing,
+  chroma,
+  scrub,
+  zero,
+  duplicates,
+  discogs,
+  convert,
+  permissions
+]
+
+fetchart:
+  auto: yes
+  cover_names: cover front album art
+  minwidth: 500
+  enforce_ratio: yes
+  sources: coverart albumart amazon filesystem
+
+embedart:
+  auto: yes
+  compare_threshold: 50
+  ifempty: yes
+
+lastgenre:
+  auto: yes
+  count: 1
+  force: no
+  source: track
+
+missing:
+  format: $albumartist - $album - $title
+  count: yes
+  total: no
+
+chroma:
+  auto: yes
+
+acoustid:
+  apikey: REDACTED
+
+scrub:
+  auto: yes
+
+zero:
+  fields: comments
+
+duplicates:
+  count: yes
+
+convert:
+  auto: yes
+  tmpdir: /mnt/f/downloads/temp
+  formats:
+    mp3_320:
+      command: ffmpeg -i $source -y -vn -b:a 320k $dest
+      extension: mp3
+
+permissions:
+  file: 644
+  dir: 755
+
+mbcollection:
+  auto: no
+
+ignore: .AppleDouble ._* *~ .DS_Store
+
+# Paths ----------------------------------------------------------------------
+
+# Paths and filenames for music files
+# relative to music directory
+paths:
+  default: $albumartist/$album%aunique{}/$disc-$track $title
+  singleton: Singletons/$artist - $title
+  comp: Various_Artist/$album%aunique{}/$disc-$track $title
+  albumtype:soundtrack: Soundtracks/$album/$disc-$track $title
