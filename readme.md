@@ -10,7 +10,7 @@ The purpose of this configuration file is to allow the tagger to make as many ch
  * Modify with your own directories and preferences
 
 * Run with 
-```beet import -q <target folder>```
+```beet -v import -q <target folder>```
 
 
 * That should be it
